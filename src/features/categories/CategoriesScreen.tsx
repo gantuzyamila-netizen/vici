@@ -3,31 +3,22 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { Icon } from '../../components/icons/Icon'
 import { BellButton } from '../../components/ui/BellButton'
 import { CircleButton } from '../../components/ui/CircleButton'
-import { Toast } from '../../components/ui/Toast'
+import { cn } from '../../lib/cn'
 import { categorySections } from '../../data/categorySections'
 import { useBack } from '../../hooks/useBack'
 
-// 05 · Categorías (Figma node 80:14175). Único camino con diseño: Helados → Rapanui.
+// 05 · Categorías (Figma node 80:14175). Con flujo diseñado: Helados, Pizzas y Hamburguesas; el resto queda deshabilitado.
 export function CategoriesScreen() {
   const navigate = useNavigate()
   const goBack = useBack('/home')
   const location = useLocation()
   const searchRef = useRef<HTMLInputElement>(null)
   const [query, setQuery] = useState('')
-  const [toast, setToast] = useState<string | null>(null)
 
   // si venís del buscador de la Home, el cursor ya queda listo para escribir
   useEffect(() => {
     if (location.state?.focusSearch) searchRef.current?.focus({ preventScroll: true })
   }, [location.state])
-
-  useEffect(() => {
-    if (!toast) return
-    const timer = setTimeout(() => setToast(null), 2200)
-    return () => clearTimeout(timer)
-  }, [toast])
-
-  const open = (id: string) => (id === 'helados' ? navigate('/tienda/rapanui') : setToast('Esta categoría no está en el prototipo'))
 
   const text = query.trim().toLowerCase()
   const sections = categorySections
@@ -59,8 +50,14 @@ export function CategoriesScreen() {
             <h2 className="whitespace-nowrap text-title-m text-neutral-900">{section.title}</h2>
             <div className="grid grid-cols-3 gap-3">
               {section.tiles.map((tile) => (
-                <button key={tile.id} type="button" onClick={() => open(tile.id)} className="group flex min-w-0 flex-col items-center gap-2">
-                  <span className="flex h-[92px] w-full items-center justify-center rounded-[26px] bg-brand-violet-50 transition-transform duration-150 group-active:scale-95">
+                <button
+                  key={tile.id}
+                  type="button"
+                  disabled={!tile.to}
+                  onClick={() => tile.to && navigate(tile.to)}
+                  className={cn('group flex min-w-0 flex-col items-center gap-2', !tile.to && 'cursor-not-allowed opacity-disabled')}
+                >
+                  <span className="flex h-[92px] w-full items-center justify-center rounded-[26px] bg-brand-violet-50 transition-transform duration-150 group-enabled:group-active:scale-95">
                     <img src={tile.image} alt="" draggable={false} className="pointer-events-none size-[72px] object-contain" />
                   </span>
                   <span className="whitespace-nowrap text-center text-label-m text-neutral-900">{tile.label}</span>
@@ -71,7 +68,6 @@ export function CategoriesScreen() {
         ))}
         {sections.length === 0 && <p className="px-6 py-6 text-center text-body-m text-neutral-500">No encontramos esa categoría.</p>}
       </div>
-      <Toast message={toast} />
     </main>
   )
 }

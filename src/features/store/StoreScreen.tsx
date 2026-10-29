@@ -1,31 +1,31 @@
 import { AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import { Icon } from '../../components/icons/Icon'
 import { Badge } from '../../components/ui/Badge'
 import { Chip } from '../../components/ui/Chip'
-import { rapanui as store } from '../../data/rapanui'
+import { catalog } from '../../data/catalog'
 import { useBack } from '../../hooks/useBack'
 import { useCart } from '../../state/CartContext'
 import { CartBar } from './components/CartBar'
 import { ProductRow } from './components/ProductRow'
+import type { StoreDetail } from '../../types'
 import { HeroActions } from './HeroActions'
 
-// 07 · Tienda (Figma node 80:14082)
+// 07 · Tienda (Figma nodes 80:14082 Rapanui, 82:14817 Pizzería Fuego, 82:14724 Burger House)
 export function StoreScreen() {
+  const { storeId = '' } = useParams()
+  const store = catalog[storeId]
+  if (!store) return <Navigate to="/categorias" replace />
+  return <Store store={store} />
+}
+
+function Store({ store }: { store: StoreDetail }) {
   const navigate = useNavigate()
   const goBack = useBack('/categorias')
   const cart = useCart()
-  const [tab, setTab] = useState(store.tabs[0])
-
-  const products = tab === 'Promociones' ? store.products : store.products.filter((product) => product.title === tab)
-
-  // Franui no tiene gustos para elegir: se suma directo al carrito
-  const select = (id: string) => {
-    const product = store.products.find((p) => p.id === id)!
-    if (product.maxFlavors) return navigate(`/tienda/rapanui/producto/${id}`)
-    cart.setItem({ productId: id, storeName: store.name, title: product.title, image: product.image, qty: 1, unitPrice: product.price, flavors: [] })
-  }
+  // solo la primera pestaña tiene contenido diseñado; el resto se ve deshabilitado
+  const [tab, setTab] = useState(store.tabs[0].label)
 
   return (
     <main className="relative h-full bg-neutral-50">
@@ -54,19 +54,18 @@ export function StoreScreen() {
             </div>
 
             <div className="no-scrollbar -mx-6 -my-6 flex gap-[10px] overflow-x-auto px-6 py-6">
-              {store.tabs.map((name) => (
-                <Chip key={name} label={name} active={tab === name} onClick={() => setTab(name)} />
+              {store.tabs.map(({ label, enabled }) => (
+                <Chip key={label} label={label} active={tab === label} disabled={!enabled} onClick={() => setTab(label)} />
               ))}
             </div>
 
             <h2 className="whitespace-nowrap text-title-m text-neutral-900">{tab}</h2>
             <div className="flex flex-col gap-3">
               <AnimatePresence mode="popLayout" initial={false}>
-                {products.map((product) => (
-                  <ProductRow key={product.id} product={product} onSelect={() => select(product.id)} />
+                {store.products.map((product) => (
+                  <ProductRow key={product.id} product={product} onSelect={() => navigate(`/tienda/${store.id}/producto/${product.id}`)} />
                 ))}
               </AnimatePresence>
-              {products.length === 0 && <p className="py-6 text-center text-body-m text-neutral-500">Esta sección no está en el prototipo.</p>}
             </div>
           </div>
         </div>

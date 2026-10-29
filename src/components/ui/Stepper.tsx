@@ -27,7 +27,7 @@ export function Stepper({ value, min, max, onChange }: StepperProps) {
   return (
     <div className="flex h-12 items-center gap-3 rounded-[24px] bg-brand-orange-500 px-2 shadow-orange">
       <StepButton icon="minus" label="Quitar uno" disabled={value <= min} onClick={() => onChange(value - 1)} />
-      <span className="relative flex h-5 min-w-[9px] items-center justify-center overflow-hidden text-label-l text-neutral-0">
+      <span className="relative flex h-5 items-center justify-center overflow-hidden text-label-l text-neutral-0">
         <AnimatePresence mode="popLayout" initial={false}>
           <motion.span key={value} initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -10, opacity: 0 }} transition={{ duration: 0.15 }}>
             {value}

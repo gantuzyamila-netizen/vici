@@ -34,6 +34,9 @@ export default {
         'body-m': ['14px', { lineHeight: '20px', fontWeight: '400' }],
         'body-s': ['12px', { lineHeight: '16px', fontWeight: '400' }],
       },
+      opacity: {
+        disabled: '0.4', // flujos que todavía no tienen pantalla diseñada
+      },
       backgroundImage: {
         splash: 'linear-gradient(to bottom, #5034a6 0%, #6e4bdc 60%, #9f7eff 100%)',
       },

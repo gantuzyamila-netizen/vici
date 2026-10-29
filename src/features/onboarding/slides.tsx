@@ -26,7 +26,7 @@ export const slides: Slide[] = [
     id: 'comida',
     title: (
       <>
-        Recibe comida, súper y
+        Recibí comida, súper y
         <br />
         productos de tus tiendas
         <br />

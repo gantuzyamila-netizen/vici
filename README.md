@@ -17,7 +17,8 @@ npm run dev
 - `src/state/CartContext.tsx`: carrito en memoria (se reinicia al recargar).
 - `src/components/layout/chrome.ts`: qué barra de estado, tab bar e indicador lleva cada ruta.
 - `src/components/`: `ui/` (primitivas), `layout/` (PhoneFrame, TabBar), `icons/`.
-- `src/data/`: mocks. `src/services/`: API simulada (con delay) que consumen las pantallas.
+- `src/data/`: mocks (`data/catalog/` tiene una tienda por archivo; se registran en `catalog/index.ts` y entran por `/tienda/:storeId`). `src/services/`: API simulada (con delay) que consumen las pantallas.
+- Lo que todavía no tiene diseño se muestra deshabilitado (clase `opacity-disabled`): en los datos basta con no definir `to` (comercios y categorías) o `customization` (productos). Ver `docs/screens.md`.
 - `src/lib/`: utilidades y constantes de animación. `src/types/`: tipos compartidos.
 - `docs/screens.md`: mapa screen de Figma → node ID → ruta.
 

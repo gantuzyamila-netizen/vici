@@ -8,12 +8,20 @@ import { order } from '../../data/order'
 import { useBack } from '../../hooks/useBack'
 import { price } from '../../lib/format'
 import { useCart } from '../../state/CartContext'
+import type { CartItem } from '../../types'
 
 const card = 'rounded-[28px] bg-neutral-0 shadow-card'
 
-function EditButton({ label, onClick }: { label: string; onClick: () => void }) {
+function EditButton({ label, onClick, disabled = false }: { label: string; onClick: () => void; disabled?: boolean }) {
   return (
-    <motion.button type="button" aria-label={label} whileTap={{ scale: 0.85 }} onClick={onClick} className="shrink-0">
+    <motion.button
+      type="button"
+      aria-label={label}
+      disabled={disabled}
+      whileTap={disabled ? undefined : { scale: 0.85 }}
+      onClick={onClick}
+      className={disabled ? 'shrink-0 cursor-not-allowed opacity-disabled' : 'shrink-0'}
+    >
       <Icon name="edit" size={20} />
     </motion.button>
   )
@@ -21,8 +29,6 @@ function EditButton({ label, onClick }: { label: string; onClick: () => void }) 
 
 // 09 · Mi carrito / Detalle de compra (Figma node 80:13928)
 export function CartScreen() {
-  const navigate = useNavigate()
-  const goBack = useBack('/tienda/rapanui')
   const live = useCart()
   // Al pagar el carrito se vacía mientras esta pantalla todavía se está yendo: se conserva lo último que mostraba
   // para que no se redirija sola ni parpadee en $0.
@@ -30,7 +36,13 @@ export function CartScreen() {
   if (live.items.length > 0) shown.current = live
   const cart = shown.current
   const item = cart.items[0]
-  if (!item) return <Navigate to="/tienda/rapanui" replace />
+  if (!item) return <Navigate to="/categorias" replace />
+  return <Cart cart={cart} item={item} />
+}
+
+function Cart({ cart, item }: { cart: ReturnType<typeof useCart>; item: CartItem }) {
+  const navigate = useNavigate()
+  const goBack = useBack(`/tienda/${item.storeId}`)
 
   const pay = () => navigate('/pedido-confirmado')
 
@@ -52,7 +64,7 @@ export function CartScreen() {
                 <span className="whitespace-nowrap text-label-s text-neutral-500">Entregar en</span>
                 <span className="text-label-m text-neutral-900">{order.address}</span>
               </div>
-              <EditButton label="Editar dirección" onClick={() => undefined} />
+              <EditButton label="Editar dirección" disabled onClick={() => undefined} />
             </div>
             <div className="h-px w-full bg-neutral-200" />
             <span className="whitespace-nowrap text-label-m text-neutral-900">Notas</span>
@@ -68,9 +80,9 @@ export function CartScreen() {
                 {item.storeName} - {item.title}
                 {item.qty > 1 && ` ×${item.qty}`}
               </p>
-              <p className="w-full text-body-s text-neutral-500">{item.flavors.join(', ')}</p>
+              <p className="w-full text-body-s text-neutral-500">{item.detail}</p>
             </div>
-            <EditButton label="Editar pedido" onClick={() => navigate(`/tienda/rapanui/producto/${item.productId}`)} />
+            <EditButton label="Editar pedido" onClick={() => navigate(`/tienda/${item.storeId}/producto/${item.productId}`)} />
           </div>
         </div>
 

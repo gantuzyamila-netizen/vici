@@ -2,6 +2,8 @@ export interface User {
   id: string
   name: string
   address: string
+  fullName: string
+  phone: string
 }
 
 export interface Category {
@@ -26,18 +28,31 @@ export interface Store {
   deliveryTime: string
   image: string
   categories: string[]
+  to?: string // sin `to` el comercio no tiene flujo diseñado y se muestra deshabilitado
 }
 
 export interface CategoryTile {
   id: string
   label: string
   image: string
+  to?: string // sin `to` la categoría no tiene flujo diseñado y se muestra deshabilitada
 }
 
 export interface CategorySection {
   title: string
   tiles: CategoryTile[]
 }
+
+export interface ToggleOption {
+  id: string
+  label: string
+  detail: string
+}
+
+// Cómo se personaliza un producto: eligiendo gustos (helados) o destildando lo que se quiere quitar (pizzas, hamburguesas)
+export type Customization =
+  | { kind: 'flavors'; max: number }
+  | { kind: 'toggles'; brand: string; heading: string; hint: string; options: ToggleOption[]; defaultRemoved: string[]; unit?: { one: string; many: string } }
 
 export interface Product {
   id: string
@@ -47,7 +62,13 @@ export interface Product {
   discount?: string
   price: number
   image: string
-  maxFlavors?: number
+  heroImage?: string
+  customization?: Customization // sin esto el producto no tiene pantalla de personalización y se muestra deshabilitado
+}
+
+export interface StoreTab {
+  label: string
+  enabled: boolean
 }
 
 export interface StoreDetail {
@@ -58,16 +79,18 @@ export interface StoreDetail {
   deliveryTime: string
   shipping: string
   hero: string
-  tabs: string[]
+  tabs: StoreTab[]
   products: Product[]
 }
 
 export interface CartItem {
   productId: string
+  storeId: string
   storeName: string
   title: string
   image: string
   qty: number
   unitPrice: number
-  flavors: string[]
+  choices: string[] // gustos elegidos o ids de lo que queda incluido
+  detail: string // lo que se lista debajo del título en el carrito
 }

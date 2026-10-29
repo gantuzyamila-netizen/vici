@@ -34,6 +34,7 @@ export function OnboardingScreen() {
   }
 
   const toLogin = () => navigate('/login')
+  const toRegister = () => navigate('/registro')
 
   return (
     <main className="relative h-full overflow-hidden bg-neutral-50">
@@ -70,7 +71,7 @@ export function OnboardingScreen() {
       </button>
 
       <div className="absolute left-0 top-[656px] flex w-[390px] flex-col items-center gap-[14px] px-6">
-        <Button variant="primary" onClick={toLogin}>
+        <Button variant="primary" onClick={toRegister}>
           Crear cuenta
         </Button>
         <Button variant="secondary" onClick={toLogin}>

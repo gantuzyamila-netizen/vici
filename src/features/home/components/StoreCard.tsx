@@ -1,17 +1,25 @@
 import { motion } from 'framer-motion'
+import { useNavigate } from 'react-router-dom'
 import { Icon } from '../../../components/icons/Icon'
 import { Badge } from '../../../components/ui/Badge'
+import { cn } from '../../../lib/cn'
+import { DISABLED_OPACITY } from '../../../lib/motion'
 import type { Store } from '../../../types'
 
 export function StoreCard({ store }: { store: Store }) {
+  const navigate = useNavigate()
+  const enabled = Boolean(store.to)
   return (
     <motion.article
       layout
       initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
+      animate={{ opacity: enabled ? 1 : DISABLED_OPACITY, y: 0 }}
       exit={{ opacity: 0, scale: 0.97 }}
-      whileTap={{ scale: 0.98 }}
-      className="flex gap-[14px] rounded-[28px] bg-neutral-0 p-3 shadow-card"
+      whileTap={enabled ? { scale: 0.98 } : undefined}
+      role="link"
+      aria-disabled={!enabled}
+      onClick={() => store.to && navigate(store.to)}
+      className={cn('flex gap-[14px] rounded-[28px] bg-neutral-0 p-3 shadow-card', enabled ? 'cursor-pointer' : 'cursor-not-allowed')}
     >
       <img src={store.image} alt="" draggable={false} className="size-[92px] shrink-0 rounded-[20px] object-cover" />
       <div className="flex h-[92px] min-w-0 flex-1 flex-col justify-between">

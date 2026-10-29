@@ -9,9 +9,12 @@ import { LoginScreen } from './features/login'
 import { OnboardingScreen } from './features/onboarding'
 import { OrderConfirmedScreen } from './features/order-confirmed'
 import { OrderTrackingScreen } from './features/order-tracking'
+import { ProfileScreen } from './features/profile'
 import { ProductCustomizeScreen } from './features/product-customize'
+import { RegisterScreen } from './features/register'
 import { SplashScreen } from './features/splash'
 import { StoreScreen } from './features/store'
+import { SupportScreen } from './features/support'
 
 // Cada screen nueva = una carpeta en src/features/<nombre> + una <Route> acá + su chrome en components/layout/chrome.ts + una fila en docs/screens.md
 export function AppRoutes() {
@@ -25,16 +28,17 @@ export function AppRoutes() {
         <Route path="/" element={screen(<SplashScreen />)} />
         <Route path="/onboarding" element={screen(<OnboardingScreen />)} />
         <Route path="/login" element={screen(<LoginScreen />)} />
+        <Route path="/registro" element={screen(<RegisterScreen />)} />
         <Route path="/home" element={screen(<HomeScreen />)} />
         <Route path="/categorias" element={screen(<CategoriesScreen />)} />
-        <Route path="/tienda/rapanui" element={screen(<StoreScreen />)} />
-        <Route path="/tienda/rapanui/producto/:id" element={screen(<ProductCustomizeScreen />)} />
+        <Route path="/tienda/:storeId" element={screen(<StoreScreen />)} />
+        <Route path="/tienda/:storeId/producto/:id" element={screen(<ProductCustomizeScreen />)} />
         <Route path="/carrito" element={screen(<CartScreen />)} />
         <Route path="/pedido-confirmado" element={screen(<OrderConfirmedScreen />)} />
         <Route path="/seguimiento" element={screen(<OrderTrackingScreen />)} />
         <Route path="/pedidos" element={screen(<ComingSoonScreen title="Pedidos" />)} />
-        <Route path="/soporte" element={screen(<ComingSoonScreen title="Soporte" />)} />
-        <Route path="/perfil" element={screen(<ComingSoonScreen title="Perfil" />)} />
+        <Route path="/soporte" element={screen(<SupportScreen />)} />
+        <Route path="/perfil" element={screen(<ProfileScreen />)} />
       </Routes>
     </AnimatePresence>
   )

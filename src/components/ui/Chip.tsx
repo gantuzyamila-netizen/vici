@@ -6,9 +6,10 @@ interface ChipProps {
   label: string
   active: boolean
   onClick: () => void
+  disabled?: boolean
 }
 
-export function Chip({ label, active, onClick }: ChipProps) {
+export function Chip({ label, active, onClick, disabled = false }: ChipProps) {
   const textRef = useRef<HTMLSpanElement>(null)
   const [width, setWidth] = useState<number>()
 
@@ -26,10 +27,12 @@ export function Chip({ label, active, onClick }: ChipProps) {
   return (
     <motion.button
       type="button"
-      whileTap={{ scale: 0.95 }}
+      disabled={disabled}
+      whileTap={disabled ? undefined : { scale: 0.95 }}
       onClick={onClick}
       className={cn(
         'relative h-10 shrink-0 rounded-[20px] px-[18px] text-label-m transition-colors duration-200',
+        disabled && 'cursor-not-allowed opacity-disabled',
         // en Figma el chip activo no tiene borde (75 de ancho = texto + padding) y los inactivos sí
         active ? 'text-neutral-0' : 'border border-neutral-200 bg-neutral-0 text-neutral-900',
       )}

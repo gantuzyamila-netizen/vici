@@ -1,4 +1,6 @@
 import { motion } from 'framer-motion'
+import { cn } from '../../../lib/cn'
+import { DISABLED_OPACITY } from '../../../lib/motion'
 import { price } from '../../../lib/format'
 import type { Product } from '../../../types'
 
@@ -8,11 +10,12 @@ export function ProductRow({ product, onSelect }: { product: Product; onSelect: 
       type="button"
       layout
       initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
+      animate={{ opacity: product.customization ? 1 : DISABLED_OPACITY, y: 0 }}
       exit={{ opacity: 0 }}
-      whileTap={{ scale: 0.98 }}
+      disabled={!product.customization}
+      whileTap={product.customization ? { scale: 0.98 } : undefined}
       onClick={onSelect}
-      className="flex w-full items-center gap-[14px] rounded-[24px] bg-neutral-0 py-[10px] pl-[10px] pr-3 text-left shadow-card"
+      className={cn('flex w-full items-center gap-[14px] rounded-[24px] bg-neutral-0 py-[10px] pl-[10px] pr-3 text-left shadow-card', !product.customization && 'cursor-not-allowed')}
     >
       <img src={product.image} alt="" draggable={false} className="pointer-events-none size-[76px] shrink-0 rounded-[18px] object-cover" />
       <span className={`flex min-w-0 flex-1 flex-col items-start ${product.discount ? 'gap-1' : 'gap-[3px]'}`}>

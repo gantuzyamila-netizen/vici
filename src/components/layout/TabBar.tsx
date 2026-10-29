@@ -9,11 +9,12 @@ interface Tab {
   label: string
   to: string
   icon: IconName
+  disabled?: boolean
 }
 
 const leftTabs: Tab[] = [
   { id: 'home', label: 'Inicio', to: '/home', icon: 'home' },
-  { id: 'pedidos', label: 'Pedidos', to: '/pedidos', icon: 'bag' },
+  { id: 'pedidos', label: 'Pedidos', to: '/pedidos', icon: 'bag', disabled: true }, // sin pantalla diseñada
 ]
 const rightTabs: Tab[] = [
   { id: 'soporte', label: 'Soporte', to: '/soporte', icon: 'info' },
@@ -22,9 +23,15 @@ const rightTabs: Tab[] = [
 
 function TabItem({ tab, active }: { tab: Tab; active: boolean }) {
   return (
-    <Link to={tab.to} className="w-[52px]">
+    <Link
+      to={tab.to}
+      aria-disabled={tab.disabled}
+      tabIndex={tab.disabled ? -1 : undefined}
+      onClick={(event) => tab.disabled && event.preventDefault()}
+      className={cn('w-[52px]', tab.disabled && 'cursor-not-allowed opacity-disabled')}
+    >
       <motion.div
-        whileTap={{ scale: 0.9 }}
+        whileTap={tab.disabled ? undefined : { scale: 0.9 }}
         className={cn('flex flex-col items-center gap-1 transition-colors duration-200', active ? 'text-brand-violet-600' : 'text-neutral-500')}
       >
         <MaskIcon name={tab.icon} size={24} />

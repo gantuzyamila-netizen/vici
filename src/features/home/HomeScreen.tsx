@@ -29,7 +29,12 @@ export function HomeScreen() {
       <TopRow address={user.address} />
       <Greeting name={user.name} />
       <SearchBar placeholder="Restaurantes, productos…" onActivate={() => navigate('/categorias', { state: { focusSearch: true } })} />
-      <CategoryChips categories={categories} activeId={categoryId} onChange={setCategoryId} />
+      <CategoryChips
+        categories={categories}
+        activeId={categoryId}
+        onChange={setCategoryId}
+        isDisabled={(id) => id !== 'all' && !storesLoading && !stores.some((store) => store.categories.includes(id))}
+      />
       <PromoCarousel promos={promos} />
       <SectionHeader title="Tus comercios favoritos" actionLabel="Ver todos" />
       <StoreList stores={visibleStores} loading={storesLoading} />
