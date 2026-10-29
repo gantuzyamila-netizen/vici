@@ -7,9 +7,10 @@ export default {
     extend: {
       colors: {
         brand: {
-          violet: { 50: '#f4f0ff', 600: '#6e4bdc' },
-          orange: { 100: '#fde4df', 500: '#f26839', 700: '#da4a19' },
+          violet: { 50: '#f4f0ff', 200: '#cabff5', 600: '#6e4bdc' },
+          orange: { 50: '#fff3ee', 100: '#fde4df', 500: '#f26839', 700: '#da4a19' },
         },
+        state: { success: '#1fa971' },
         neutral: {
           0: '#ffffff',
           50: '#f8f7fc',
@@ -23,14 +24,18 @@ export default {
         sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
       },
       fontSize: {
-        'display-xl': ['30px', { lineHeight: '36px', letterSpacing: '-1.5px', fontWeight: '800' }],
-        'title-m': ['18px', { lineHeight: '24px', letterSpacing: '-0.5px', fontWeight: '700' }],
+        'display-xl': ['30px', { lineHeight: '36px', letterSpacing: '-0.45px', fontWeight: '800' }],
+        'title-l': ['24px', { lineHeight: '30px', letterSpacing: '-0.24px', fontWeight: '700' }],
+        'title-m': ['18px', { lineHeight: '24px', letterSpacing: '-0.09px', fontWeight: '700' }],
         'title-s': ['16px', { lineHeight: '22px', fontWeight: '600' }],
         'label-l': ['15px', { lineHeight: '20px', fontWeight: '600' }],
         'label-m': ['13px', { lineHeight: '18px', fontWeight: '600' }],
-        'label-s': ['11px', { lineHeight: '14px', letterSpacing: '0.2px', fontWeight: '600' }],
+        'label-s': ['11px', { lineHeight: '14px', letterSpacing: '0.022px', fontWeight: '600' }],
         'body-m': ['14px', { lineHeight: '20px', fontWeight: '400' }],
         'body-s': ['12px', { lineHeight: '16px', fontWeight: '400' }],
+      },
+      backgroundImage: {
+        splash: 'linear-gradient(to bottom, #5034a6 0%, #6e4bdc 60%, #9f7eff 100%)',
       },
       boxShadow: {
         card: '0 4px 20px rgba(80, 52, 166, 0.08)',

@@ -14,3 +14,12 @@
     @apply bg-neutral-100 font-sans text-neutral-900 antialiased;
   }
 }
+
+@layer utilities {
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
