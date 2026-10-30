@@ -9,13 +9,12 @@ export interface Chrome {
   tabBar: boolean
   activeTab: TabId | null
   indicatorTone: 'dark' | 'light'
-  deviceChrome: boolean // false: la pantalla ya trae su propia barra de estado e indicador (pantalla de inicio del iPhone)
 }
 
-const base: Chrome = { statusTone: 'dark', statusBackground: false, tabBar: false, activeTab: null, indicatorTone: 'dark', deviceChrome: true }
+const base: Chrome = { statusTone: 'dark', statusBackground: false, tabBar: false, activeTab: null, indicatorTone: 'dark' }
 
 const table: Array<[string, Partial<Chrome>]> = [
-  ['/', { deviceChrome: false }],
+  ['/', { statusTone: 'light', indicatorTone: 'light' }],
   ['/splash', { statusTone: 'light', indicatorTone: 'light' }],
   ['/onboarding', {}],
   ['/login', {}],

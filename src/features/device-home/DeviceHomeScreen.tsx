@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion'
 import { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { FitStage } from '../../components/layout/FitStage'
 
 interface Rect {
   left: number
@@ -10,8 +9,18 @@ interface Rect {
   height: number
 }
 
+// Íconos de iOS tal como están en el frame 301:690 de Figma (originales exportados, 64 px)
+const apps = [
+  ['facetime', 'calendar', 'photos', 'camera'],
+  ['mail', 'clock', 'maps', 'weather'],
+  ['reminders', 'notes', 'stocks'],
+]
+const dock = ['phone', 'safari', 'messages', 'music']
+
+const icon = 'size-16 shrink-0 rounded-[14.5px]'
+
 // Pantalla de inicio del iPhone (Figma node 301:690): el prototipo arranca acá y se entra tocando el logo de vici.
-// El fondo es la captura exportada de Figma; el logo es un botón real encima, en la misma posición.
+// Está armada en capas (fondo, grilla arriba, dock abajo) para ocupar toda la pantalla en cualquier teléfono, como el resto de la app.
 export function DeviceHomeScreen() {
   const navigate = useNavigate()
   const main = useRef<HTMLElement>(null)
@@ -26,21 +35,47 @@ export function DeviceHomeScreen() {
   }
 
   return (
-    <main ref={main} className="relative h-full overflow-hidden bg-[#14111f]">
-      <FitStage designWidth={389} designHeight={844}>
-        <div className="relative h-[844px] w-[389px]">
-          <img src="/images/iphone/home-screen.png" alt="" draggable={false} className="pointer-events-none absolute inset-0 size-full select-none" />
-          <motion.button
-            type="button"
-            aria-label="Abrir vici"
-            whileTap={{ scale: 0.9 }}
-            onClick={open}
-            className="absolute left-[297px] top-[272px] flex size-[68px] items-center justify-center rounded-[20px] bg-brand-violet-600 shadow-button"
-          >
-            <img src="/images/brand/logo-v.png" alt="" width={42} height={41.911} draggable={false} className="block" />
-          </motion.button>
+    <main ref={main} className="relative h-full overflow-hidden bg-[#14111f] md:border-[3.86px] md:border-[#27272a] md:rounded-[32px]">
+      <img src="/images/iphone/wallpaper.jpg" alt="" draggable={false} className="pointer-events-none absolute inset-0 size-full select-none object-cover" />
+
+      {/* grilla de apps, anclada arriba: 4 columnas que se reparten el ancho */}
+      <div className="absolute inset-x-0 top-0 flex flex-col gap-[37.5px] px-[19px] pt-[67px]">
+        {apps.map((row, r) => (
+          <div key={r} className="flex justify-between">
+            {row.map((name) => (
+              <img key={name} src={`/images/iphone/app-${name}.png`} alt="" draggable={false} className={icon} />
+            ))}
+            {r === 2 && (
+              // el logo mide 68 (los íconos 64) y va pegado al borde derecho de la grilla, como en Figma
+              <span className="relative size-[68px] shrink-0">
+                <motion.button
+                  type="button"
+                  aria-label="Abrir vici"
+                  whileTap={{ scale: 0.9 }}
+                  onClick={open}
+                  className="absolute inset-0 flex size-[68px] items-center justify-center rounded-[20px] bg-brand-violet-600 shadow-button"
+                >
+                  <img src="/images/brand/logo-v.png" alt="" width={42} height={41.911} draggable={false} className="block" />
+                </motion.button>
+              </span>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* puntitos de página y dock, anclados abajo */}
+      <div className="absolute inset-x-[7px] bottom-[max(16px,env(safe-area-inset-bottom))] flex flex-col items-center gap-[17px] md:bottom-10">
+        <div className="flex gap-[9px]">
+          {[1, 0.4, 0.4].map((opacity, i) => (
+            <span key={i} className="size-[7px] rounded-full bg-neutral-0" style={{ opacity }} />
+          ))}
         </div>
-      </FitStage>
+        <div className="flex w-full justify-between rounded-[36px] bg-[rgba(255,255,255,0.22)] px-3 py-4 backdrop-blur-[12px]">
+          {dock.map((name) => (
+            <img key={name} src={`/images/iphone/app-${name}.png`} alt="" draggable={false} className={icon} />
+          ))}
+        </div>
+      </div>
 
       {/* "abrir la app": el ícono crece hasta llenar la pantalla */}
       {opening && (

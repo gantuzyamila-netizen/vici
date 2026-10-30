@@ -6,7 +6,7 @@ Cada frame se verificó con un diff de píxeles contra su captura de Figma (390�
 
 | # | Frame | Node ID | Ruta | Sale hacia | Dif. |
 | --- | --- | --- | --- | --- | --- |
-| 00 | Pantalla de inicio del iPhone | `301:690` | `/` | tocar el logo de vici (el ícono crece hasta llenar la pantalla) → `/splash` | 1,16 % |
+| 00 | Pantalla de inicio del iPhone | `301:690` | `/` | tocar el logo de vici (el ícono crece hasta llenar la pantalla) → `/splash` | 7 %⁴ |
 | 01 | Splash | `279:1423` | `/splash` | automático (~2,4 s) → `/onboarding` | 0,02 % |
 | 02 | Onboarding 1 | `80:14519` | `/onboarding` | avanza solo (4 s) o con swipe; "Omitir" e "Iniciar sesión" → `/login`; "Crear cuenta" → `/registro` | 0,11 % |
 | 02 | Onboarding 2 | `80:14552` | `/onboarding` | ídem | 0,45 % |
@@ -29,6 +29,8 @@ Cada frame se verificó con un diff de píxeles contra su captura de Figma (390�
 | — | Perfil | `279:1454` / `279:1540` | `/perfil` | "Cerrar sesión" → `/login` | 0,53 % |
 
 Cómo se mide: captura del prototipo con el marco de escritorio (390×844) contra el PNG de Figma. Los frames de 842 px de alto (Home, Perfil, Soporte) se exportan con 1 px de corrimiento vertical, que se compensa antes de comparar.
+
+⁴ Está armada en capas (wallpaper, grilla de apps arriba, dock abajo) con los íconos originales de Figma para ocupar toda la pantalla en mobile, como el resto de la app; el borde oscuro y las esquinas del teléfono solo se dibujan en el marco de escritorio. La diferencia es sobre todo el reescalado del wallpaper y el borde de los íconos.
 
 ¹ Incluye lo deshabilitado a propósito (opacidad reducida, ver abajo) y, en las tiendas, la barra "Ver mi carrito" tal como queda tras agregar el producto.
 ² El botón "Agregar al carrito" de ese frame tiene el ícono y el texto alineados a la izquierda; el del resto de los frames (y el sistema) los centra, y se respeta el sistema.

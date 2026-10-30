@@ -14,9 +14,9 @@ function Shell() {
   return (
     <PhoneFrame>
       <AppRoutes />
-      {chrome.deviceChrome && <StatusBar tone={chrome.statusTone} withBackground={chrome.statusBackground} />}
+      <StatusBar tone={chrome.statusTone} withBackground={chrome.statusBackground} />
       <AnimatePresence>{chrome.tabBar && <TabBar activeTab={chrome.activeTab} />}</AnimatePresence>
-      {chrome.deviceChrome && <HomeIndicator tone={chrome.indicatorTone} />}
+      <HomeIndicator tone={chrome.indicatorTone} />
     </PhoneFrame>
   )
 }
