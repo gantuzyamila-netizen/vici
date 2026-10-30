@@ -14,7 +14,7 @@ interface Tab {
 
 const leftTabs: Tab[] = [
   { id: 'home', label: 'Inicio', to: '/home', icon: 'home' },
-  { id: 'pedidos', label: 'Pedidos', to: '/pedidos', icon: 'bag', disabled: true }, // sin pantalla diseñada
+  { id: 'pedidos', label: 'Pedidos', to: '/pedidos', icon: 'bag' },
 ]
 const rightTabs: Tab[] = [
   { id: 'soporte', label: 'Soporte', to: '/soporte', icon: 'info' },
@@ -49,7 +49,7 @@ export function TabBar({ activeTab }: { activeTab: TabId | null }) {
       animate={{ y: 0, opacity: 1 }}
       exit={{ y: 110, opacity: 0 }}
       transition={{ type: 'spring', stiffness: 380, damping: 36 }}
-      className="absolute inset-x-4 bottom-6 z-30 flex h-[72px] items-center justify-between rounded-[36px] bg-neutral-0 px-[18px] shadow-float"
+      className="absolute inset-x-4 bottom-[max(24px,calc(env(safe-area-inset-bottom)+8px))] z-30 flex h-[72px] items-center justify-between rounded-[36px] bg-neutral-0 px-[18px] shadow-float"
     >
       {leftTabs.map((tab) => (
         <TabItem key={tab.id} tab={tab} active={activeTab === tab.id} />

@@ -2,16 +2,20 @@ import { motion } from 'framer-motion'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useCart } from '../../state/CartContext'
+import { useOrder } from '../../state/OrderContext'
+import { ConfettiBag } from './Confetti'
 
 const CONFIRMED_MS = 3200
 
 // 09 · congrats (Figma node 80:14493): después de un momento sigue al seguimiento del pedido
 export function OrderConfirmedScreen() {
   const navigate = useNavigate()
-  const { clear } = useCart()
+  const { items, total, clear } = useCart()
+  const { place } = useOrder()
 
   useEffect(() => {
-    // el pedido ya está pagado: el carrito se vacía
+    // el pedido ya está pagado: pasa a la pestaña Pedidos y el carrito se vacía
+    if (items.length > 0) place({ storeName: items[0].storeName, items, total })
     clear()
     const timer = setTimeout(() => navigate('/seguimiento', { replace: true }), CONFIRMED_MS)
     return () => clearTimeout(timer)
@@ -32,27 +36,28 @@ export function OrderConfirmedScreen() {
           className="size-full"
         />
       </div>
-      <img src="/images/congrats/deco-right.svg" alt="" draggable={false} className="absolute left-[196px] top-[615px] size-[340px]" />
-      <img src="/images/congrats/deco-left.svg" alt="" draggable={false} className="absolute left-[-67px] top-[641px] size-[190px]" />
+      <motion.img
+        src="/images/congrats/deco-mint.svg"
+        alt=""
+        draggable={false}
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.8, delay: 0.1, ease: 'easeOut' }}
+        className="absolute -left-[34px] -top-[164px] h-[508px] w-[457px]"
+      />
 
-      <div className="absolute left-0 top-[calc(50%-60.5px)] flex h-[487px] w-[390px] -translate-y-1/2 flex-col items-center px-6 pb-6 pt-9">
-        <motion.img
-          src="/images/congrats/bag.png"
-          alt=""
-          draggable={false}
-          initial={{ scale: 0.4, y: 40, rotate: -8, opacity: 0 }}
-          animate={{ scale: 1, y: 0, rotate: 0, opacity: 1 }}
-          transition={{ type: 'spring', stiffness: 210, damping: 13, delay: 0.15 }}
-          className="pointer-events-none size-[365px] shrink-0 object-cover"
-        />
-        <motion.div initial={{ y: 16, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.45, duration: 0.4 }} className="flex w-full flex-col items-center gap-3 text-center">
-          <h1 className="w-full text-display-xl text-neutral-900">¡Pedido confirmado!</h1>
-          <p className="w-full text-body-m text-neutral-500">
-            El local ya está preparando tu pedido.
-            <br />
-            ¡En breve tendrás novedades!
-          </p>
-        </motion.div>
+      <div className="absolute inset-x-0 top-[calc(50%-60.5px)] flex -translate-y-1/2 justify-center">
+        <div className="flex h-[487px] w-[390px] flex-col items-center px-6 pb-6 pt-9">
+          <ConfettiBag />
+          <motion.div initial={{ y: 16, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.45, duration: 0.4 }} className="flex w-full flex-col items-center gap-3 text-center">
+            <h1 className="w-full text-display-xl text-neutral-900">¡Pedido confirmado!</h1>
+            <p className="w-full text-body-m text-neutral-500">
+              El local ya está preparando tu pedido.
+              <br />
+              ¡En breve tendrás novedades!
+            </p>
+          </motion.div>
+        </div>
       </div>
     </main>
   )

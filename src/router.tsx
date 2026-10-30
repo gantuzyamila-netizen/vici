@@ -3,10 +3,11 @@ import { Route, Routes, useLocation, useNavigationType } from 'react-router-dom'
 import { ScreenTransition } from './components/layout/ScreenTransition'
 import { CartScreen } from './features/cart'
 import { CategoriesScreen } from './features/categories'
-import { ComingSoonScreen } from './features/coming-soon/ComingSoonScreen'
+import { DeviceHomeScreen } from './features/device-home'
 import { HomeScreen } from './features/home'
 import { LoginScreen } from './features/login'
 import { OnboardingScreen } from './features/onboarding'
+import { OrdersScreen } from './features/orders'
 import { OrderConfirmedScreen } from './features/order-confirmed'
 import { OrderTrackingScreen } from './features/order-tracking'
 import { ProfileScreen } from './features/profile'
@@ -25,7 +26,8 @@ export function AppRoutes() {
   return (
     <AnimatePresence custom={dir}>
       <Routes location={location} key={location.pathname}>
-        <Route path="/" element={screen(<SplashScreen />)} />
+        <Route path="/" element={screen(<DeviceHomeScreen />)} />
+        <Route path="/splash" element={screen(<SplashScreen />)} />
         <Route path="/onboarding" element={screen(<OnboardingScreen />)} />
         <Route path="/login" element={screen(<LoginScreen />)} />
         <Route path="/registro" element={screen(<RegisterScreen />)} />
@@ -36,7 +38,7 @@ export function AppRoutes() {
         <Route path="/carrito" element={screen(<CartScreen />)} />
         <Route path="/pedido-confirmado" element={screen(<OrderConfirmedScreen />)} />
         <Route path="/seguimiento" element={screen(<OrderTrackingScreen />)} />
-        <Route path="/pedidos" element={screen(<ComingSoonScreen title="Pedidos" />)} />
+        <Route path="/pedidos" element={screen(<OrdersScreen />)} />
         <Route path="/soporte" element={screen(<SupportScreen />)} />
         <Route path="/perfil" element={screen(<ProfileScreen />)} />
       </Routes>

@@ -12,8 +12,9 @@ export function LoginScreen() {
   const enter = () => navigate('/home')
 
   return (
-    <main className="relative h-full overflow-hidden bg-neutral-50">
-      <div className="absolute left-6 top-[115px] flex w-[343px] flex-col gap-8">
+    <main className="no-scrollbar relative h-full overflow-y-auto bg-neutral-50">
+      {/* en pantallas bajas el bloque sube y, si igual no entra, la pantalla scrollea en lugar de cortarse */}
+      <div className="ml-6 flex w-[min(343px,calc(100%-48px))] flex-col gap-8 pb-6 pt-[clamp(20px,calc(100dvh-640px),115px)] md:pt-[115px]">
         <div className="flex flex-col items-center gap-[10px]">
           <div className="flex size-[68px] items-center justify-center rounded-[22px] bg-brand-violet-600 shadow-button">
             <img src="/images/brand/logo-v.png" alt="Vici" width={42} height={41.911} draggable={false} className="block" />

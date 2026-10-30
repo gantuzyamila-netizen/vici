@@ -6,7 +6,7 @@ export type IconName =
   | 'home' | 'bag' | 'clipboard' | 'info' | 'user'
   | 'mail' | 'lock' | 'eye' | 'google' | 'apple'
   | 'back' | 'heart' | 'star' | 'cart' | 'minus' | 'plus' | 'check' | 'check-14' | 'edit' | 'pin-violet' | 'bike-orange'
-  | 'heart-outline' | 'trophy' | 'credit-card' | 'log-out' | 'expand-right' | 'search-24'
+  | 'heart-outline' | 'trophy' | 'credit-card' | 'log-out' | 'expand-right' | 'search-24' | 'phone' | 'chat' | 'bike-violet'
   | 'tracking/bike-white' | 'tracking/pin-white' | 'tracking/bike-status'
 
 interface IconProps {

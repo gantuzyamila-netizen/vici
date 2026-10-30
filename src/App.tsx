@@ -6,6 +6,7 @@ import { PhoneFrame } from './components/layout/PhoneFrame'
 import { StatusBar } from './components/layout/StatusBar'
 import { TabBar } from './components/layout/TabBar'
 import { CartProvider, useCart } from './state/CartContext'
+import { OrderProvider } from './state/OrderContext'
 import { AppRoutes } from './router'
 
 function Shell() {
@@ -13,9 +14,9 @@ function Shell() {
   return (
     <PhoneFrame>
       <AppRoutes />
-      <StatusBar tone={chrome.statusTone} withBackground={chrome.statusBackground} />
+      {chrome.deviceChrome && <StatusBar tone={chrome.statusTone} withBackground={chrome.statusBackground} />}
       <AnimatePresence>{chrome.tabBar && <TabBar activeTab={chrome.activeTab} />}</AnimatePresence>
-      <HomeIndicator tone={chrome.indicatorTone} />
+      {chrome.deviceChrome && <HomeIndicator tone={chrome.indicatorTone} />}
     </PhoneFrame>
   )
 }
@@ -24,7 +25,9 @@ export default function App() {
   return (
     <BrowserRouter>
       <CartProvider>
-        <Shell />
+        <OrderProvider>
+          <Shell />
+        </OrderProvider>
       </CartProvider>
     </BrowserRouter>
   )

@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { AnimatePresence, motion } from 'framer-motion'
+import { useRef, useState } from 'react'
 import { SearchBar } from '../../components/ui/SearchBar'
 import { SectionHeader } from '../../components/ui/SectionHeader'
 import { categories } from '../../data/categories'
@@ -9,35 +9,61 @@ import { useStores } from '../../hooks/useStores'
 import { CategoryChips } from './components/CategoryChips'
 import { Greeting } from './components/Greeting'
 import { PromoCarousel } from './components/PromoCarousel'
+import { SearchResults } from './components/SearchResults'
 import { StoreList } from './components/StoreList'
 import { TopRow } from './components/TopRow'
 
-// 04 · Home (Figma node 5:4754 / 80:14281)
+// 04 · Home (Figma node 293:3723). Al tocar el buscador se abre el teclado y la Home pasa a "modo búsqueda":
+// el mismo input sigue montado (así el teclado no se cierra) y el resto del contenido se reemplaza por los resultados.
 export function HomeScreen() {
-  const navigate = useNavigate()
-  const [categoryId, setCategoryId] = useState('all')
+  const [searching, setSearching] = useState(false)
+  const [query, setQuery] = useState('')
+  const input = useRef<HTMLInputElement>(null)
   const { data: promos } = usePromos()
   const { data: stores, loading: storesLoading } = useStores()
 
-  const visibleStores = useMemo(
-    () => stores.filter((store) => categoryId === 'all' || store.categories.includes(categoryId)),
-    [stores, categoryId],
-  )
+  const cancel = () => {
+    input.current?.blur()
+    setQuery('')
+    setSearching(false)
+  }
 
   return (
     <main className="no-scrollbar flex h-full flex-col gap-5 overflow-y-auto bg-neutral-50 pb-[124px] pt-14 [&>*]:shrink-0">
-      <TopRow address={user.address} />
-      <Greeting name={user.name} />
-      <SearchBar placeholder="Restaurantes, productos…" onActivate={() => navigate('/categorias', { state: { focusSearch: true } })} />
-      <CategoryChips
-        categories={categories}
-        activeId={categoryId}
-        onChange={setCategoryId}
-        isDisabled={(id) => id !== 'all' && !storesLoading && !stores.some((store) => store.categories.includes(id))}
-      />
-      <PromoCarousel promos={promos} />
-      <SectionHeader title="Tus comercios favoritos" actionLabel="Ver todos" />
-      <StoreList stores={visibleStores} loading={storesLoading} />
+      {!searching && <TopRow address={user.address} />}
+      {!searching && <Greeting name={user.name} />}
+
+      <div className="flex items-center gap-3 px-6">
+        <SearchBar ref={input} placeholder="Restaurantes, productos…" value={query} onChange={setQuery} onFocus={() => setSearching(true)} />
+        <AnimatePresence initial={false}>
+          {searching && (
+            <motion.button
+              type="button"
+              initial={{ opacity: 0, width: 0 }}
+              animate={{ opacity: 1, width: 'auto' }}
+              exit={{ opacity: 0, width: 0 }}
+              transition={{ duration: 0.2 }}
+              // onPointerDown: no deja que el input pierda el foco antes de cancelar
+              onPointerDown={(event) => event.preventDefault()}
+              onClick={cancel}
+              className="overflow-hidden whitespace-nowrap text-label-m text-brand-violet-600 active:opacity-60"
+            >
+              Cancelar
+            </motion.button>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {searching ? (
+        <SearchResults query={query} stores={stores} onQuery={setQuery} />
+      ) : (
+        <>
+          <CategoryChips categories={categories} />
+          <PromoCarousel promos={promos} />
+          <SectionHeader title="Tus comercios favoritos" actionLabel="Ver todos" />
+          <StoreList stores={stores} loading={storesLoading} />
+        </>
+      )}
     </main>
   )
 }

@@ -20,7 +20,7 @@ export function CartBar({ visible, total, onOpen }: CartBarProps) {
           transition={{ type: 'spring', stiffness: 380, damping: 34 }}
           whileTap={{ scale: 0.98 }}
           onClick={onOpen}
-          className="absolute inset-x-6 bottom-6 z-30 flex h-16 items-center gap-3 rounded-[32px] bg-brand-violet-600 pl-[10px] pr-6 text-left shadow-button"
+          className="absolute inset-x-6 bottom-[max(24px,calc(env(safe-area-inset-bottom)+8px))] z-30 flex h-16 items-center gap-3 rounded-[32px] bg-brand-violet-600 pl-[10px] pr-6 text-left shadow-button"
         >
           <span className="flex size-11 shrink-0 items-center justify-center rounded-[22px] bg-brand-orange-500">
             <Icon name="cart" size={20} />

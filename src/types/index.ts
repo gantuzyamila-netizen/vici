@@ -9,6 +9,10 @@ export interface User {
 export interface Category {
   id: string
   label: string
+  image: string
+  imageClass: string // medida y posición del ícono dentro del círculo de 56 px, como en Figma
+  crop?: { width: string; height: string; left: string; top: string } // ícono recortado dentro de una ventana (Pizzas)
+  to?: string // sin `to` el atajo no tiene flujo diseñado y se muestra deshabilitado
 }
 
 export interface Promo {

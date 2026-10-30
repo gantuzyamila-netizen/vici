@@ -118,7 +118,7 @@ function Cart({ cart, item }: { cart: ReturnType<typeof useCart>; item: CartItem
         </div>
       </div>
 
-      <div className="absolute inset-x-0 top-[732px] z-30 flex h-28 flex-col rounded-t-[28px] bg-neutral-0 px-6 pt-4" style={{ filter: 'drop-shadow(0 4px 10px rgba(80,52,166,0.08))' }}>
+      <div className="absolute inset-x-0 bottom-0 z-30 flex h-[calc(88px+env(safe-area-inset-bottom))] flex-col rounded-t-[28px] bg-neutral-0 px-6 pt-4 md:h-28" style={{ filter: 'drop-shadow(0 4px 10px rgba(80,52,166,0.08))' }}>
         <Button variant="primary" onClick={pay}>
           Pagar {price(cart.total)}
         </Button>

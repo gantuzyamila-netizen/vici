@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { Icon } from '../../components/icons/Icon'
 import { BellButton } from '../../components/ui/BellButton'
 import { CircleButton } from '../../components/ui/CircleButton'
+import { EmptyState } from '../../components/ui/EmptyState'
 import { cn } from '../../lib/cn'
 import { categorySections } from '../../data/categorySections'
 import { useBack } from '../../hooks/useBack'
@@ -66,7 +67,11 @@ export function CategoriesScreen() {
             </div>
           </section>
         ))}
-        {sections.length === 0 && <p className="px-6 py-6 text-center text-body-m text-neutral-500">No encontramos esa categoría.</p>}
+        {sections.length === 0 && (
+          <div className="py-10">
+            <EmptyState icon="search" title="No encontramos esa categoría" text="Probá con otra palabra o mirá todas las categorías." action={{ label: 'Ver todas', onClick: () => setQuery('') }} />
+          </div>
+        )}
       </div>
     </main>
   )
